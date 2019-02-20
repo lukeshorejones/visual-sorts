@@ -47,7 +47,7 @@ def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, compared, swap
     return numbers, base_i, i, min_i, comparisons, swaps, compared, swapped, sorting
 
 
-def insertion_sort(numbers, i, next_i, comparisons, swaps, sorting):
+def insertion_sort(numbers, i, next_i, comparisons, swaps, compared, swapped, sorting):
     if i + 1 < len(numbers):
         if i >= 0:
             comparisons += 1
@@ -65,7 +65,7 @@ def insertion_sort(numbers, i, next_i, comparisons, swaps, sorting):
     else:
         sorting = False
 
-    return numbers, i, next_i, comparisons, swaps, sorting
+    return numbers, i, next_i, comparisons, swaps, compared, swapped, sorting
 
 
 def merge_sort(current_list):
