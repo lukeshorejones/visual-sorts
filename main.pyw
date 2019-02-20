@@ -25,6 +25,8 @@ class Main:
 
         self.comparisons = 0
         self.swaps = 0
+        self.compared = (0, 0)
+        self.swapped = False
 
         self.bar_width = 1
         self.bar_height = 0
@@ -122,8 +124,11 @@ class Main:
         self.sort_index_1 = 1
         self.pass_swaps = 0
         self.min_i = 0
+
         self.comparisons = 0
         self.swaps = 0
+        self.compared = (0, 0)
+        self.swapped = False
 
         self.draw(self.numbers)
         self.start_time = time.time()
@@ -141,31 +146,37 @@ class Main:
 
     def sort(self):
         if self.algorithm.get() == "Bubble Sort":
-            self.numbers, self.sort_index_0, self.pass_swaps, self.comparisons, self.swaps, self.sorting = sorts.bubble_sort(
+            self.numbers, self.sort_index_0, self.pass_swaps, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.bubble_sort(
                 self.numbers,
                 self.sort_index_0,
                 self.pass_swaps,
                 self.comparisons,
                 self.swaps,
+                self.compared,
+                self.swapped,
                 self.sorting)
 
         elif self.algorithm.get() == "Selection Sort":
-            self.numbers, self.sort_index_0, self.sort_index_0_2, self.min_i, self.comparisons, self.swaps, self.sorting = sorts.selection_sort(
+            self.numbers, self.sort_index_0, self.sort_index_0_2, self.min_i, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.selection_sort(
                 self.numbers,
                 self.sort_index_0,
                 self.sort_index_0_2,
                 self.min_i,
                 self.comparisons,
                 self.swaps,
+                self.compared,
+                self.swapped,
                 self.sorting)
 
         elif self.algorithm.get() == "Insertion Sort":
-            self.numbers, self.sort_index_0, self.sort_index_1, self.comparisons, self.swaps, self.sorting = sorts.insertion_sort(
+            self.numbers, self.sort_index_0, self.sort_index_1, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.insertion_sort(
                 self.numbers,
                 self.sort_index_0,
                 self.sort_index_1,
                 self.comparisons,
                 self.swaps,
+                self.compared,
+                self.swapped,
                 self.sorting)
 
         elif self.algorithm.get() == "Merge Sort":

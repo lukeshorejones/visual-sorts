@@ -1,14 +1,16 @@
 import random
 
 
-def bubble_sort(numbers, i, pass_swaps, comparisons, swaps, sorting):
+def bubble_sort(numbers, i, pass_swaps, comparisons, swaps, compared, swapped, sorting):
     comparisons += 1
+    compared = (i, i+1)
     if numbers[i] > numbers[i + 1]:
         x = numbers[i + 1]
         numbers[i + 1] = numbers[i]
         numbers[i] = x
         pass_swaps += 1
         swaps += 1
+        swapped = True
 
     if i < len(numbers) - 2:
         i += 1
@@ -18,13 +20,14 @@ def bubble_sort(numbers, i, pass_swaps, comparisons, swaps, sorting):
         i = 0
         pass_swaps = 0
 
-    return numbers, i, pass_swaps, comparisons, swaps, sorting
+    return numbers, i, pass_swaps, comparisons, swaps, compared, swapped, sorting
 
 
-def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, sorting):
-    comparisons += 1
+def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, compared, swapped, sorting):
     if base_i < len(numbers):
         if i < len(numbers):
+            comparisons += 1
+            compared = (i, min_i)
             if numbers[i] <= numbers[min_i]:
                 min_i = i
             i += 1
@@ -34,24 +37,27 @@ def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, sorting):
             numbers[base_i] = x
 
             swaps += 1
+            swapped = True
             base_i += 1
             i = base_i
             min_i = base_i
     else:
         sorting = False
 
-    return numbers, base_i, i, min_i, comparisons, swaps, sorting
+    return numbers, base_i, i, min_i, comparisons, swaps, compared, swapped, sorting
 
 
 def insertion_sort(numbers, i, next_i, comparisons, swaps, sorting):
-    comparisons += 1
     if i + 1 < len(numbers):
         if i >= 0:
+            comparisons += 1
+            compared = (i, i+1)
             if numbers[i + 1] < numbers[i]:
                 x = numbers[i + 1]
                 numbers[i + 1] = numbers[i]
                 numbers[i] = x
                 swaps += 1
+                swapped = True
             i -= 1
         else:
             i = next_i
