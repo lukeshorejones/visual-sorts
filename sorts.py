@@ -21,28 +21,6 @@ def bubble_sort(numbers, i, pass_swaps, comparisons, swaps, sorting):
     return numbers, i, pass_swaps, comparisons, swaps, sorting
 
 
-def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, sorting):
-    comparisons += 1
-    if base_i < len(numbers):
-        if i < len(numbers):
-            if numbers[i] <= numbers[min_i]:
-                min_i = i
-            i += 1
-        else:
-            x = numbers[min_i]
-            numbers[min_i] = numbers[base_i]
-            numbers[base_i] = x
-
-            swaps += 1
-            base_i += 1
-            i = base_i
-            min_i = base_i
-    else:
-        sorting = False
-
-    return numbers, base_i, i, min_i, comparisons, swaps, sorting
-
-
 def insertion_sort(numbers, i, next_i, comparisons, swaps, sorting):
     comparisons += 1
     if i + 1 < len(numbers):

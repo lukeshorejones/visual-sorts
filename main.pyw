@@ -18,10 +18,8 @@ class Main:
 
         self.start_time = 0
         self.sort_index_0 = 0
-        self.sort_index_0_2 = 0
         self.sort_index_1 = 1
         self.pass_swaps = 0
-        self.min_i = 0
 
         self.comparisons = 0
         self.swaps = 0
@@ -34,7 +32,7 @@ class Main:
         self.gui = tk.Tk()
         self.gui.title("Sorting Algorithms")
 
-        self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort"]#, "Merge Sort", "Bogosort", "Bogobogosort"]
+        self.algorithms = ["Bubble Sort", "Insertion Sort"]#, "Merge Sort", "Bogosort", "Bogobogosort"]
         self.algorithm = tk.StringVar(self.gui)
         self.algorithm.set(self.algorithms[0])
 
@@ -118,10 +116,8 @@ class Main:
 
         self.status = "Waiting. Press Play to start sorting."
         self.sort_index_0 = 0
-        self.sort_index_0_2 = 0
         self.sort_index_1 = 1
         self.pass_swaps = 0
-        self.min_i = 0
         self.comparisons = 0
         self.swaps = 0
 
@@ -145,16 +141,6 @@ class Main:
                 self.numbers,
                 self.sort_index_0,
                 self.pass_swaps,
-                self.comparisons,
-                self.swaps,
-                self.sorting)
-
-        elif self.algorithm.get() == "Selection Sort":
-            self.numbers, self.sort_index_0, self.sort_index_0_2, self.min_i, self.comparisons, self.swaps, self.sorting = sorts.selection_sort(
-                self.numbers,
-                self.sort_index_0,
-                self.sort_index_0_2,
-                self.min_i,
                 self.comparisons,
                 self.swaps,
                 self.sorting)
