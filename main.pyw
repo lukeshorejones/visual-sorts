@@ -71,6 +71,7 @@ class Main:
         self.pause_button = tk.Button(self.gui, textvariable=self.pause_text, command=self.toggle_pause, width=8)
         self.reset_button = tk.Button(self.gui, text="Reset", command=self.reset, width=8)
         self.bottom_text = tk.Label(self.gui, textvariable=self.bottom_text_content, anchor=tk.NW, justify=tk.LEFT, relief=tk.GROOVE, padx=padding, pady=padding)
+        self.bottom_frame = tk.Frame()
 
         self.list_size.set(default_list_size)
         self.delay.set(0)
@@ -91,8 +92,10 @@ class Main:
         self.pause_button.grid(row=8, column=2, padx=padding, pady=padding, sticky=tk.W)
         self.reset_button.grid(row=8, column=3, padx=padding, pady=padding, sticky=tk.W)
         self.bottom_text.grid(row=9, column=1, columnspan=3, padx=padding, pady=padding, sticky=tk.N+tk.S+tk.E+tk.W)
+        self.bottom_frame.grid(row=10, column=0, columnspan=4, sticky=tk.N+tk.S+tk.E+tk.W)
 
         self.gui.grid_rowconfigure(9, weight=1)
+        self.gui.grid_rowconfigure(10, weight=999)
 
     def new(self):
         if self.list_type.get() == "Distributed":
