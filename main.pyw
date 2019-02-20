@@ -26,7 +26,7 @@ class Main:
         self.comparisons = 0
         self.swaps = 0
         self.compared = (0, 0)
-        self.swapped = False
+        self.swapped = None
 
         self.bar_width = 1
         self.bar_height = 0
@@ -128,7 +128,7 @@ class Main:
         self.comparisons = 0
         self.swaps = 0
         self.compared = (0, 0)
-        self.swapped = False
+        self.swapped = None
 
         self.draw(self.numbers)
         self.start_time = time.time()
@@ -159,9 +159,7 @@ class Main:
                 self.pass_swaps,
                 self.comparisons,
                 self.swaps,
-                self.compared,
-                self.swapped,
-                self.sorting)
+            )
 
         elif self.algorithm.get() == "Selection Sort":
             self.numbers, self.sort_index_0, self.sort_index_0_2, self.min_i, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.selection_sort(
@@ -171,9 +169,7 @@ class Main:
                 self.min_i,
                 self.comparisons,
                 self.swaps,
-                self.compared,
-                self.swapped,
-                self.sorting)
+            )
 
         elif self.algorithm.get() == "Insertion Sort":
             self.numbers, self.sort_index_0, self.sort_index_1, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.insertion_sort(
@@ -182,9 +178,7 @@ class Main:
                 self.sort_index_1,
                 self.comparisons,
                 self.swaps,
-                self.compared,
-                self.swapped,
-                self.sorting)
+            )
 
         elif self.algorithm.get() == "Merge Sort":
             self.numbers = sorts.merge_sort(self.numbers)
@@ -198,7 +192,40 @@ class Main:
     def draw(self, sublist):
         self.canvas.delete('all')
 
+        if self.display.get() == "Colours":
+            self.canvas.config(bg="white")
+            for i in range(len(sublist)):
+                self.canvas.create_line(
+                    (i + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2, (i + 0.5) * self.bar_width + 2, 2,
+                    width=self.bar_width, fill=self.colours[sublist[i] - 1]
+                )
+
         if self.display.get() == "Bars (Black on White)":
+            if self.sorting:
+                if self.compared is not None:
+                    self.canvas.create_line(
+                        (self.compared[0] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.compared[0] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#00FFFF"
+                    )
+                    self.canvas.create_line(
+                        (self.compared[1] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.compared[1] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#00FFFF"
+                    )
+
+                if self.swapped is not None:
+                    self.canvas.create_line(
+                        (self.swapped[0] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.swapped[0] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#00FF00"
+                    )
+                    self.canvas.create_line(
+                        (self.swapped[1] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.swapped[1] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#00FF00"
+                    )
+
             self.canvas.config(bg="white")
             for i in range(len(sublist)):
                 self.canvas.create_line(
@@ -207,6 +234,31 @@ class Main:
                 )
 
         elif self.display.get() == "Bars (White on Black)":
+            if self.sorting:
+                if self.compared is not None:
+                    self.canvas.create_line(
+                        (self.compared[0] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.compared[0] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#008080"
+                    )
+                    self.canvas.create_line(
+                        (self.compared[1] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.compared[1] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#008080"
+                    )
+
+                if self.swapped is not None:
+                    self.canvas.create_line(
+                        (self.swapped[0] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.swapped[0] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#008000"
+                    )
+                    self.canvas.create_line(
+                        (self.swapped[1] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.swapped[1] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#008000"
+                    )
+
             self.canvas.config(bg="black")
             for i in range(len(sublist)):
                 self.canvas.create_line(
@@ -215,20 +267,37 @@ class Main:
                 )
 
         elif self.display.get() == "Bars (Coloured)":
+            if self.sorting:
+                if self.compared is not None:
+                    self.canvas.create_line(
+                        (self.compared[0] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.compared[0] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#000000"
+                    )
+                    self.canvas.create_line(
+                        (self.compared[1] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.compared[1] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#000000"
+                    )
+
+                if self.swapped is not None:
+                    self.canvas.create_line(
+                        (self.swapped[0] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.swapped[0] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#C0C0C0"
+                    )
+                    self.canvas.create_line(
+                        (self.swapped[1] + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2,
+                        (self.swapped[1] + 0.5) * self.bar_width + 2, 2, width=self.bar_width,
+                        fill="#C0C0C0"
+                    )
+
             self.canvas.config(bg="white")
             for i in range(len(sublist)):
                 self.canvas.create_line(
                     (i + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2, (i + 0.5) * self.bar_width + 2,
                     self.canvas_size[1] - (sublist[i] * self.bar_height) + 2, width=self.bar_width,
                     fill=self.colours[sublist[i] - 1]
-                )
-
-        elif self.display.get() == "Colours":
-            self.canvas.config(bg="white")
-            for i in range(len(sublist)):
-                self.canvas.create_line(
-                    (i + 0.5) * self.bar_width + 2, self.canvas_size[1] + 2, (i + 0.5) * self.bar_width + 2, 2,
-                    width=self.bar_width, fill=self.colours[sublist[i] - 1]
                 )
 
     def update(self):

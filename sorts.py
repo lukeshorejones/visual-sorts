@@ -1,16 +1,18 @@
 import random
 
 
-def bubble_sort(numbers, i, pass_swaps, comparisons, swaps, compared, swapped, sorting):
+def bubble_sort(numbers, i, pass_swaps, comparisons, swaps):
+    swapped = None
+    sorting = True
     comparisons += 1
-    compared = (i, i+1)
+    compared = (i, i + 1)
     if numbers[i] > numbers[i + 1]:
         x = numbers[i + 1]
         numbers[i + 1] = numbers[i]
         numbers[i] = x
         pass_swaps += 1
         swaps += 1
-        swapped = True
+        swapped = compared
 
     if i < len(numbers) - 2:
         i += 1
@@ -23,7 +25,10 @@ def bubble_sort(numbers, i, pass_swaps, comparisons, swaps, compared, swapped, s
     return numbers, i, pass_swaps, comparisons, swaps, compared, swapped, sorting
 
 
-def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, compared, swapped, sorting):
+def selection_sort(numbers, base_i, i, min_i, comparisons, swaps):
+    compared = None
+    swapped = None
+    sorting = True
     if base_i < len(numbers):
         if i < len(numbers):
             comparisons += 1
@@ -37,7 +42,7 @@ def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, compared, swap
             numbers[base_i] = x
 
             swaps += 1
-            swapped = True
+            swapped = (min_i, base_i)
             base_i += 1
             i = base_i
             min_i = base_i
@@ -47,7 +52,10 @@ def selection_sort(numbers, base_i, i, min_i, comparisons, swaps, compared, swap
     return numbers, base_i, i, min_i, comparisons, swaps, compared, swapped, sorting
 
 
-def insertion_sort(numbers, i, next_i, comparisons, swaps, compared, swapped, sorting):
+def insertion_sort(numbers, i, next_i, comparisons, swaps):
+    compared = None
+    swapped = None
+    sorting = True
     if i + 1 < len(numbers):
         if i >= 0:
             comparisons += 1
@@ -57,7 +65,7 @@ def insertion_sort(numbers, i, next_i, comparisons, swaps, compared, swapped, so
                 numbers[i + 1] = numbers[i]
                 numbers[i] = x
                 swaps += 1
-                swapped = True
+                swapped = compared
             i -= 1
         else:
             i = next_i
