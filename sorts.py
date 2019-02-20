@@ -36,13 +36,17 @@ def selection_sort(numbers, base_i, i, min_i, comparisons, swaps):
             if numbers[i] <= numbers[min_i]:
                 min_i = i
             i += 1
-        else:
+        elif min_i != base_i:
             x = numbers[min_i]
             numbers[min_i] = numbers[base_i]
             numbers[base_i] = x
 
             swaps += 1
             swapped = (min_i, base_i)
+            base_i += 1
+            i = base_i
+            min_i = base_i
+        else:
             base_i += 1
             i = base_i
             min_i = base_i
