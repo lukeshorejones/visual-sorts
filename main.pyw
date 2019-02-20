@@ -142,6 +142,7 @@ class Main:
                 if not self.sorting:
                     self.pause_text.set('Play')
                     self.status = "Done! Press Play to sort again."
+
                     self.algorithm_menu.config(state=tk.NORMAL)
                     self.list_type_menu.config(state=tk.NORMAL)
                     self.list_size.config(state=tk.NORMAL)
@@ -317,8 +318,16 @@ class Main:
         self.set_sorting(not self.sorting)
         if self.sorting:
             if self.status == "Done! Press Play to sort again.":
+                self.sort_index_0 = 0
+                self.sort_index_0_2 = 0
+                self.sort_index_1 = 1
+                self.pass_swaps = 0
+                self.min_i = 0
+
                 self.comparisons = 0
                 self.swaps = 0
+                self.compared = (0, 0)
+                self.swapped = None
             self.status = "Sorting..."
         else:
             self.status = "Paused. Reset to configure sort."
