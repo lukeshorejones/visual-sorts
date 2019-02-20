@@ -34,7 +34,7 @@ class Main:
         self.running = True
 
         self.gui = tk.Tk()
-        self.gui.title("Sorting Algorithms")
+        self.gui.title("Visual Sorts")
 
         self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort"]#, "Merge Sort", "Bogosort", "Bogobogosort"]
         self.algorithm = tk.StringVar(self.gui)
