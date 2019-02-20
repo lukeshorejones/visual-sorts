@@ -118,7 +118,7 @@ class Main:
                 colour[j] = int(colour[j] * 255)
             self.colours.append("#%02x%02x%02x" % tuple(colour))
 
-        self.status = "Waiting. Press Play to start sorting."
+        self.status = "Press Play to start sorting."
         self.sort_index_0 = 0
         self.sort_index_0_2 = 0
         self.sort_index_1 = 1
@@ -138,9 +138,16 @@ class Main:
         while self.running:
             if self.sorting and time.time() - self.start_time >= self.delay.get():
                 self.sort()
+
                 if not self.sorting:
                     self.pause_text.set('Play')
+                    self.status = "Done! Press Play to sort again."
+                    self.algorithm_menu.config(state=tk.NORMAL)
+                    self.list_type_menu.config(state=tk.NORMAL)
+                    self.list_size.config(state=tk.NORMAL)
+
                 self.start_time = time.time()
+
             self.draw(self.numbers)
             self.update()
 
@@ -240,6 +247,9 @@ class Main:
     def toggle_pause(self):
         self.set_sorting(not self.sorting)
         if self.sorting:
+            if self.status == "Done! Press Play to sort again.":
+                self.comparisons = 0
+                self.swaps = 0
             self.status = "Sorting..."
         else:
             self.status = "Paused. Reset to configure sort."
