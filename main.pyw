@@ -6,7 +6,7 @@ import math
 import random
 
 
-class Main:
+class GUI:
     def __init__(self, master):
         self.master = master
 
@@ -368,7 +368,12 @@ class Main:
             self.pause_text.set("Play")
 
 
-root = tk.Tk()
-m = Main(root)
-root.after(0, m.run)
-root.mainloop()
+def main():
+    root = tk.Tk()
+    gui = GUI(root)
+    root.after(0, gui.run)
+    root.mainloop()
+
+
+if __name__ == '__main__':
+    main()
