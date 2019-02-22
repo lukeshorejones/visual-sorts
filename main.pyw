@@ -193,7 +193,17 @@ class GUI:
             )
 
         elif self.algorithm.get() == "Merge Sort":
-            self.numbers, self.sort_index_1, self.sort_index_0, self.sublist_end, self.left, self.right, self.merge, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.merge_sort(self.numbers, self.sort_index_1, self.sort_index_0, self.sublist_end, self.left, self.right, self.merge, self.comparisons, self.swaps)
+            self.numbers, self.sort_index_1, self.sort_index_0, self.sublist_end, self.left, self.right, self.merge, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.merge_sort(
+                self.numbers,
+                self.sort_index_1,
+                self.sort_index_0,
+                self.sublist_end,
+                self.left,
+                self.right,
+                self.merge,
+                self.comparisons,
+                self.swaps
+            )
 
         elif self.algorithm.get() == "Bogosort":
             self.numbers, self.sort_index_1, self.ordered, self.comparisons, self.swaps, self.compared, self.sorting = sorts.bogosort(
