@@ -4,10 +4,12 @@ import tkinter.ttk as ttk
 import colorsys
 import math
 import random
-import time
+
 
 class Main:
-    def __init__(self):
+    def __init__(self, master):
+        self.master = master
+
         default_list_size = 50
         padding = 4
         self.canvas_size = (600, 600)
@@ -15,7 +17,6 @@ class Main:
         self.numbers = []
         self.colours = []
 
-        self.start_time = 0
         self.sort_index_0 = 0
         self.sort_index_0_2 = 0
         self.sort_index_1 = 1
@@ -35,51 +36,49 @@ class Main:
         self.bar_width = 1
         self.bar_height = 0
         self.sorting = False
-        self.running = True
 
-        self.gui = tk.Tk()
-        self.gui.title("Visual Sorts")
-        self.gui.iconbitmap("favicon.ico")
+        self.master.title("Visual Sorts")
+        self.master.iconbitmap("favicon.ico")
 
         self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Bogosort", "Bogobogosort"]
-        self.algorithm = tk.StringVar(self.gui)
+        self.algorithm = tk.StringVar(self.master)
         self.algorithm.set(self.algorithms[0])
 
         self.list_types = ["Distributed", "Random"]
-        self.list_type = tk.StringVar(self.gui)
+        self.list_type = tk.StringVar(self.master)
         self.list_type.set(self.list_types[0])
 
         self.displays = ["Bars (Black on White)", "Bars (White on Black)", "Bars (Coloured)", "Colours"]
-        self.display = tk.StringVar(self.gui)
+        self.display = tk.StringVar(self.master)
         self.display.set(self.displays[0])
 
-        self.pause_text = tk.StringVar(self.gui)
+        self.pause_text = tk.StringVar(self.master)
         self.pause_text.set("Play")
 
-        self.bottom_text_content = tk.StringVar(self.gui)
+        self.bottom_text_content = tk.StringVar(self.master)
         self.bottom_text_content.set("")
         self.status = ""
 
         self.canvas = tk.Canvas(width=self.canvas_size[0], height=self.canvas_size[1], bg='white')
-        self.title_text = tk.Label(self.gui, text="Options", font=("Arial", 10))
-        self.separator = ttk.Separator(self.gui)
-        self.algorithm_text = tk.Label(self.gui, text="Algorithm")
-        self.algorithm_menu = tk.OptionMenu(self.gui, self.algorithm, *tuple(self.algorithms))
-        self.list_type_text = tk.Label(self.gui, text="List Type")
-        self.list_type_menu = tk.OptionMenu(self.gui, self.list_type, *tuple(self.list_types))
-        self.list_size_text = tk.Label(self.gui, text="List Size")
-        self.list_size = tk.Scale(self.gui, from_=2, to=self.canvas_size[0], orient=tk.HORIZONTAL, length=151)
-        self.display_text = tk.Label(self.gui, text="Display")
-        self.display_menu = tk.OptionMenu(self.gui, self.display, *tuple(self.displays))
-        self.delay_text = tk.Label(self.gui, text="Delay (s)")
-        self.delay = tk.Scale(self.gui, from_=0, to=1, resolution=0.01, orient=tk.HORIZONTAL, length=151)
-        self.pause_button = tk.Button(self.gui, textvariable=self.pause_text, command=self.toggle_pause, width=9)
-        self.reset_button = tk.Button(self.gui, text="Reset", command=self.reset, width=9)
-        self.bottom_text = tk.Label(self.gui, textvariable=self.bottom_text_content, anchor=tk.NW, justify=tk.LEFT, relief=tk.GROOVE, padx=padding, pady=padding)
+        self.title_text = tk.Label(self.master, text="Options", font=("Arial", 10))
+        self.separator = ttk.Separator(self.master)
+        self.algorithm_text = tk.Label(self.master, text="Algorithm")
+        self.algorithm_menu = tk.OptionMenu(self.master, self.algorithm, *tuple(self.algorithms))
+        self.list_type_text = tk.Label(self.master, text="List Type")
+        self.list_type_menu = tk.OptionMenu(self.master, self.list_type, *tuple(self.list_types))
+        self.list_size_text = tk.Label(self.master, text="List Size")
+        self.list_size = tk.Scale(self.master, from_=2, to=self.canvas_size[0], orient=tk.HORIZONTAL, length=151)
+        self.display_text = tk.Label(self.master, text="Display")
+        self.display_menu = tk.OptionMenu(self.master, self.display, *tuple(self.displays))
+        self.delay_text = tk.Label(self.master, text="Delay (s)")
+        self.delay = tk.Scale(self.master, from_=0.001, to=0.5, resolution=0.001, orient=tk.HORIZONTAL, length=151)
+        self.pause_button = tk.Button(self.master, textvariable=self.pause_text, command=self.toggle_pause, width=9)
+        self.reset_button = tk.Button(self.master, text="Reset", command=self.reset, width=9)
+        self.bottom_text = tk.Label(self.master, textvariable=self.bottom_text_content, anchor=tk.NW, justify=tk.LEFT, relief=tk.GROOVE, padx=padding, pady=padding)
         self.bottom_frame = tk.Frame()
 
         self.list_size.set(default_list_size)
-        self.delay.set(0)
+        self.delay.set(0.001)
 
         self.canvas.grid(row=1, column=0, padx=padding, pady=padding, rowspan=9, sticky=tk.N+tk.W)
         self.title_text.grid(row=1, column=1, columnspan=3, padx=padding, pady=(padding, 0), sticky=tk.W)
@@ -99,8 +98,10 @@ class Main:
         self.bottom_text.grid(row=9, column=1, columnspan=3, padx=padding, pady=padding, sticky=tk.N+tk.S+tk.E+tk.W)
         self.bottom_frame.grid(row=10, column=0, columnspan=4, sticky=tk.N+tk.S+tk.E+tk.W)
 
-        self.gui.grid_rowconfigure(9, weight=1)
-        self.gui.grid_rowconfigure(10, weight=999)
+        self.master.grid_rowconfigure(9, weight=1)
+        self.master.grid_rowconfigure(10, weight=999)
+
+        self.new()
 
     def new(self):
         if self.list_type.get() == "Distributed":
@@ -143,27 +144,24 @@ class Main:
         self.compared = None
         self.swapped = None
 
+        self.bottom_text_content.set(self.status + "\n\nComparisons: " + str(self.comparisons) + "\nSwaps: " + str(self.swaps))
         self.draw(self.numbers)
-        self.start_time = time.time()
-        self.run()
 
     def run(self):
-        while self.running:
-            if self.sorting and time.time() - self.start_time >= self.delay.get():
-                self.sort()
-
-                if not self.sorting:
-                    self.pause_text.set('Play')
-                    self.status = "Done! Press Play to sort again."
-
-                    self.algorithm_menu.config(state=tk.NORMAL)
-                    self.list_type_menu.config(state=tk.NORMAL)
-                    self.list_size.config(state=tk.NORMAL)
-
-                self.start_time = time.time()
+        if self.sorting:
+            self.sort()
+            if not self.sorting:
+                self.pause_text.set('Play')
+                self.status = "Done! Press Play to sort again."
+                self.algorithm_menu.config(state=tk.NORMAL)
+                self.list_type_menu.config(state=tk.NORMAL)
+                self.list_size.config(state=tk.NORMAL)
 
             self.draw(self.numbers)
-            self.update()
+            self.bottom_text_content.set(self.status + "\n\nComparisons: " + str(self.comparisons) + "\nSwaps: " + str(self.swaps))
+
+        delay_time = int(self.delay.get() * 1000)
+        self.master.after(delay_time, self.run)
 
     def sort(self):
         if self.algorithm.get() == "Bubble Sort":
@@ -327,12 +325,6 @@ class Main:
                     fill=self.colours[sublist[i] - 1]
                 )
 
-    def update(self):
-        self.bottom_text_content.set(self.status + "\n\nComparisons: " + str(self.comparisons) + "\nSwaps: " + str(self.swaps))
-
-        self.gui.update_idletasks()
-        self.gui.update()
-
     def reset(self):
         self.set_sorting(False)
         self.algorithm_menu.config(state=tk.NORMAL)
@@ -363,6 +355,8 @@ class Main:
         else:
             self.status = "Paused. Reset to configure sort."
 
+        self.bottom_text_content.set(self.status + "\n\nComparisons: " + str(self.comparisons) + "\nSwaps: " + str(self.swaps))
+
     def set_sorting(self, s):
         self.sorting = s
         if self.sorting:
@@ -373,5 +367,8 @@ class Main:
         else:
             self.pause_text.set("Play")
 
-m = Main()
-m.new()
+
+root = tk.Tk()
+m = Main(root)
+root.after(0, m.run)
+root.mainloop()
