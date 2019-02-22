@@ -39,6 +39,7 @@ class Main:
 
         self.gui = tk.Tk()
         self.gui.title("Visual Sorts")
+        self.gui.iconbitmap("favicon.ico")
 
         self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Bogosort", "Bogobogosort"]
         self.algorithm = tk.StringVar(self.gui)
