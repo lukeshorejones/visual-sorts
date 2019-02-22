@@ -6,7 +6,6 @@ import math
 import random
 import time
 
-
 class Main:
     def __init__(self):
         default_list_size = 50
@@ -22,10 +21,15 @@ class Main:
         self.sort_index_1 = 1
         self.pass_swaps = 0
         self.min_i = 0
+        self.ordered = True
+        self.sublist_end = 2
+        self.left = []
+        self.right = []
+        self.merge = []
 
         self.comparisons = 0
         self.swaps = 0
-        self.compared = (0, 0)
+        self.compared = None
         self.swapped = None
 
         self.bar_width = 1
@@ -36,7 +40,7 @@ class Main:
         self.gui = tk.Tk()
         self.gui.title("Visual Sorts")
 
-        self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort"]#, "Merge Sort", "Bogosort", "Bogobogosort"]
+        self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Bogosort", "Bogobogosort"]
         self.algorithm = tk.StringVar(self.gui)
         self.algorithm.set(self.algorithms[0])
 
@@ -127,10 +131,15 @@ class Main:
         self.sort_index_1 = 1
         self.pass_swaps = 0
         self.min_i = 0
+        self.ordered = True
+        self.sublist_end = 2
+        self.left = []
+        self.right = []
+        self.merge = []
 
         self.comparisons = 0
         self.swaps = 0
-        self.compared = (0, 0)
+        self.compared = None
         self.swapped = None
 
         self.draw(self.numbers)
@@ -185,13 +194,26 @@ class Main:
             )
 
         elif self.algorithm.get() == "Merge Sort":
-            self.numbers = sorts.merge_sort(self.numbers)
+            self.numbers, self.sort_index_1, self.sort_index_0, self.sublist_end, self.left, self.right, self.merge, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.merge_sort(self.numbers, self.sort_index_1, self.sort_index_0, self.sublist_end, self.left, self.right, self.merge, self.comparisons, self.swaps)
 
         elif self.algorithm.get() == "Bogosort":
-            sorts.bogosort(self.numbers)
+            self.numbers, self.sort_index_1, self.ordered, self.comparisons, self.swaps, self.compared, self.sorting = sorts.bogosort(
+                self.numbers,
+                self.sort_index_1,
+                self.ordered,
+                self.comparisons,
+                self.swaps,
+            )
 
         elif self.algorithm.get() == "Bogobogosort":
-            sorts.bogobogosort(self.numbers)
+            self.numbers, self.sublist_end, self.sort_index_1, self.ordered, self.comparisons, self.swaps, self.compared, self.sorting = sorts.bogobogosort(
+                self.numbers,
+                self.sublist_end,
+                self.sort_index_1,
+                self.ordered,
+                self.comparisons,
+                self.swaps,
+            )
 
     def draw(self, sublist):
         self.canvas.delete('all')
@@ -326,10 +348,15 @@ class Main:
                 self.sort_index_1 = 1
                 self.pass_swaps = 0
                 self.min_i = 0
+                self.ordered = True
+                self.sublist_end = 2
+                self.left = []
+                self.right = []
+                self.merge = []
 
                 self.comparisons = 0
                 self.swaps = 0
-                self.compared = (0, 0)
+                self.compared = None
                 self.swapped = None
             self.status = "Sorting..."
         else:

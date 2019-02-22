@@ -80,84 +80,90 @@ def insertion_sort(numbers, i, next_i, comparisons, swaps):
     return numbers, i, next_i, comparisons, swaps, compared, swapped, sorting
 
 
-def merge_sort(current_list):
-    if len(current_list) < 2:
-        return current_list
+def merge_sort(numbers, size, start_left, end, left, right, merge, comparisons, swaps):
+    referenced = None
+    appended = None
+    sorting = True
+    if size < len(numbers):
+        if start_left + size < len(numbers):
+            if not merge:
+                start_right = start_left + size
+                end = min(start_right + size, len(numbers))
 
-    centre = len(current_list)//2
-    left = current_list[:centre]
-    right = current_list[centre:]
+                left = numbers[start_left:start_right]
+                right = numbers[start_right:end]
 
-    left = merge_sort(left)
-    right = merge_sort(left)
+            if left and right:
+                comparisons += 1
+                if left[0] < right[0]:
+                    merge.append(left[0])
+                    left = left[1:]
+                else:
+                    merge.append(right[0])
+                    right = right[1:]
+                numbers[start_left + len(merge) - 1] = merge[-1]
+                swaps += 1
+                referenced = (start_left, end - 1)
+                appended = (start_left + len(merge) - 1, start_left + len(merge) - 1)
+            elif left:
+                merge.append(left[0])
+                left = left[1:]
+                numbers[start_left + len(merge) - 1] = merge[-1]
+                swaps += 1
+                referenced = (start_left, end - 1)
+                appended = (start_left + len(merge) - 1, start_left + len(merge) - 1)
+            elif right:
+                merge.append(right[0])
+                right = right[1:]
+                numbers[start_left + len(merge) - 1] = merge[-1]
+                swaps += 1
+                referenced = (start_left, end - 1)
+                appended = (start_left + len(merge) - 1, start_left + len(merge) - 1)
+            else:
+                merge = []
 
-    sorted_list = []
-    while left != [] and right != []:
-        if left[0] < right[0]:
-            sorted_list.append(left[0])
-            left.remove(left[0])
+            if not merge:
+                start_left += 2 * size
+
         else:
-            sorted_list.append(right[0])
-            right.remove(right[0])
-
-    if left != []:
-        sorted_list = sorted_list + left
+            start_left = 0
+            size *= 2
     else:
-        sorted_list = sorted_list + right
+        sorting = False
 
-    return sorted_list
+    return numbers, size, start_left, end, left, right, merge, comparisons, swaps, referenced, appended, sorting
 
-def bogosort(numbers):
-    ordered = False
-    while not ordered:
+
+def bogosort(numbers, i, ordered, comparisons, swaps):
+    sorting = True
+    compared = None
+    if i < len(numbers) and ordered:
+        compared = (i-1, i)
+        comparisons += 1
+        if numbers[i-1] > numbers[i]:
+            ordered = False
+        i += 1
+
+    elif ordered:
+        sorting = False
+
+    else:
+        i = 1
         ordered = True
-        for i in range(1, len(numbers)):
-            if numbers[i-1] > numbers[i]:
-                ordered = False
-                break
-        
-        if not ordered:
-            random.shuffle(numbers)
-            
-            time.sleep(delay)
-            update_canvas(numbers)
+        swaps += 1
+        random.shuffle(numbers)
 
-    return numbers
+    return numbers, i, ordered, comparisons, swaps, compared, sorting
 
 
-def bogobogosort(numbers):
-    global sublists_sorted
+def bogobogosort(numbers, sublist_end, i, ordered, comparisons, swaps):
+    sublist = numbers[:sublist_end]
+    sublist, i, ordered, comparisons, swaps, compared, sorting = bogosort(sublist, i, ordered, comparisons, swaps)
 
-    while sublists_sorted < len(current_list)-1:
-        sublist = current_list[:sublists_sorted+2]
-        bogobogoloop(sublist, current_list)
-        
-        current_list[:sublists_sorted+2] = sublist
-        sublists_sorted += 1
+    numbers = sublist + numbers[sublist_end:]
+    if not sorting and sublist_end < len(numbers):
+        sublist_end += 1
+        ordered = False
+        sorting = True
 
-        time.sleep(delay)
-        update_canvas(current_list)
-    
-    return current_list
-
-
-def bogobogoloop(sublist, current_list):
-    global sublists_sorted
-    ordered = False
-    while not ordered:
-        ordered = True
-        for i in range(1, len(sublist)):
-            if sublist[i-1] > sublist[i]:
-                ordered = False
-                break
-        
-        if not ordered:
-            random.shuffle(sublist)
-            
-            temp_list = current_list
-            temp_list[:sublists_sorted+2] = sublist
-
-            time.sleep(delay)
-            update_canvas(temp_list)
-
-    return current_list
+    return numbers, sublist_end, i, ordered, comparisons, swaps, compared, sorting

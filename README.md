@@ -4,8 +4,11 @@ Visual, customisable implementations of different sorting algorithms. An easy-to
 # User Guide
 Run main.pyw to run the program. You'll need Python 3 already installed.
 
-# v1.1 Changelog (Pre-Release)
+# v1.1 Changelog
  - Added selection sort.
+ - Added merge sort.
+ - Added bogosort.
+ - Added bogobogosort.
  - Added comparison/swap highlighting in bar display modes.
  - Various bugfixes and miscellaneous improvements.
 
