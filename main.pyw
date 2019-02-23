@@ -38,7 +38,9 @@ class GUI:
         self.sorting = False
 
         self.master.title("Visual Sorts")
-        self.master.iconbitmap("favicon.ico")
+
+        favicon = tk.PhotoImage(file="favicon.gif")
+        self.master.tk.call("wm", "iconphoto", self.master._w, favicon)
 
         self.algorithms = ["Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Bogosort", "Bogobogosort"]
         self.algorithm = tk.StringVar(self.master)
