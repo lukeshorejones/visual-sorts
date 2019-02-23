@@ -127,6 +127,7 @@ class GUI:
 
         self.status = "Press Play to start sorting."
         self.set_default_args()
+        self.sorting = False
 
         self.bottom_text_content.set(self.status + "\n\nComparisons: " + str(self.comparisons) + "\nSwaps: " + str(self.swaps))
         self.draw(self.numbers)
@@ -347,7 +348,6 @@ class GUI:
         self.swaps = 0
         self.compared = None
         self.swapped = None
-        self.sorting = False
 
 
 def main():
