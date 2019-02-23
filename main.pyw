@@ -17,25 +17,21 @@ class GUI:
         self.numbers = []
         self.colours = []
 
-        self.sort_index_0 = 0
-        self.sort_index_0_2 = 0
-        self.sort_index_1 = 1
-        self.pass_swaps = 0
-        self.min_i = 0
-        self.ordered = True
-        self.sublist_end = 2
-        self.left = []
-        self.right = []
-        self.merge = []
+        self.bubble_sort_args = (0, 0)
+        self.selection_sort_args = (0, 0, 0)
+        self.insertion_sort_args = (0, 1)
+        self.merge_sort_args = (1, 0, 2, [], [], [])
+        self.bogosort_args = (1, True)
+        self.bogobogosort_args = (2, 1, True)
 
         self.comparisons = 0
         self.swaps = 0
         self.compared = None
         self.swapped = None
+        self.sorting = False
 
         self.bar_width = 1
         self.bar_height = 0
-        self.sorting = False
 
         self.master.title("Visual Sorts")
 
@@ -130,21 +126,7 @@ class GUI:
             self.colours.append("#%02x%02x%02x" % tuple(colour))
 
         self.status = "Press Play to start sorting."
-        self.sort_index_0 = 0
-        self.sort_index_0_2 = 0
-        self.sort_index_1 = 1
-        self.pass_swaps = 0
-        self.min_i = 0
-        self.ordered = True
-        self.sublist_end = 2
-        self.left = []
-        self.right = []
-        self.merge = []
-
-        self.comparisons = 0
-        self.swaps = 0
-        self.compared = None
-        self.swapped = None
+        self.set_default_args()
 
         self.bottom_text_content.set(self.status + "\n\nComparisons: " + str(self.comparisons) + "\nSwaps: " + str(self.swaps))
         self.draw(self.numbers)
@@ -167,63 +149,51 @@ class GUI:
 
     def sort(self):
         if self.algorithm.get() == "Bubble Sort":
-            self.numbers, self.sort_index_0, self.pass_swaps, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.bubble_sort(
+            self.numbers, self.comparisons, self.swaps, self.bubble_sort_args, self.compared, self.swapped, self.sorting = sorts.bubble_sort(
                 self.numbers,
-                self.sort_index_0,
-                self.pass_swaps,
                 self.comparisons,
                 self.swaps,
+                *self.bubble_sort_args
             )
 
         elif self.algorithm.get() == "Selection Sort":
-            self.numbers, self.sort_index_0, self.sort_index_0_2, self.min_i, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.selection_sort(
+            self.numbers, self.comparisons, self.swaps, self.selection_sort_args, self.compared, self.swapped, self.sorting = sorts.selection_sort(
                 self.numbers,
-                self.sort_index_0,
-                self.sort_index_0_2,
-                self.min_i,
                 self.comparisons,
                 self.swaps,
+                *self.selection_sort_args
             )
 
         elif self.algorithm.get() == "Insertion Sort":
-            self.numbers, self.sort_index_0, self.sort_index_1, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.insertion_sort(
+            self.numbers, self.comparisons, self.swaps, self.insertion_sort_args, self.compared, self.swapped, self.sorting = sorts.insertion_sort(
                 self.numbers,
-                self.sort_index_0,
-                self.sort_index_1,
                 self.comparisons,
                 self.swaps,
+                *self.insertion_sort_args
             )
 
         elif self.algorithm.get() == "Merge Sort":
-            self.numbers, self.sort_index_1, self.sort_index_0, self.sublist_end, self.left, self.right, self.merge, self.comparisons, self.swaps, self.compared, self.swapped, self.sorting = sorts.merge_sort(
+            self.numbers, self.comparisons, self.swaps, self.merge_sort_args, self.compared, self.swapped, self.sorting = sorts.merge_sort(
                 self.numbers,
-                self.sort_index_1,
-                self.sort_index_0,
-                self.sublist_end,
-                self.left,
-                self.right,
-                self.merge,
                 self.comparisons,
-                self.swaps
+                self.swaps,
+                *self.merge_sort_args
             )
 
         elif self.algorithm.get() == "Bogosort":
-            self.numbers, self.sort_index_1, self.ordered, self.comparisons, self.swaps, self.compared, self.sorting = sorts.bogosort(
+            self.numbers, self.comparisons, self.swaps, self.bogosort_args, self.compared, self.sorting = sorts.bogosort(
                 self.numbers,
-                self.sort_index_1,
-                self.ordered,
                 self.comparisons,
                 self.swaps,
+                *self.bogosort_args
             )
 
         elif self.algorithm.get() == "Bogobogosort":
-            self.numbers, self.sublist_end, self.sort_index_1, self.ordered, self.comparisons, self.swaps, self.compared, self.sorting = sorts.bogobogosort(
+            self.numbers, self.comparisons, self.swaps, self.bogobogosort_args, self.compared, self.sorting = sorts.bogobogosort(
                 self.numbers,
-                self.sublist_end,
-                self.sort_index_1,
-                self.ordered,
                 self.comparisons,
                 self.swaps,
+                *self.bogobogosort_args
             )
 
     def draw(self, sublist):
@@ -348,21 +318,7 @@ class GUI:
         self.set_sorting(not self.sorting)
         if self.sorting:
             if self.status == "Done! Press Play to sort again.":
-                self.sort_index_0 = 0
-                self.sort_index_0_2 = 0
-                self.sort_index_1 = 1
-                self.pass_swaps = 0
-                self.min_i = 0
-                self.ordered = True
-                self.sublist_end = 2
-                self.left = []
-                self.right = []
-                self.merge = []
-
-                self.comparisons = 0
-                self.swaps = 0
-                self.compared = None
-                self.swapped = None
+                self.set_default_args()
             self.status = "Sorting..."
         else:
             self.status = "Paused. Reset to configure sort."
@@ -378,6 +334,20 @@ class GUI:
             self.list_size.config(state=tk.DISABLED)
         else:
             self.pause_text.set("Play")
+
+    def set_default_args(self):
+        self.bubble_sort_args = (0, 0)
+        self.selection_sort_args = (0, 0, 0)
+        self.insertion_sort_args = (0, 1)
+        self.merge_sort_args = (1, 0, 2, [], [], [])
+        self.bogosort_args = (1, True)
+        self.bogobogosort_args = (2, 1, True)
+
+        self.comparisons = 0
+        self.swaps = 0
+        self.compared = None
+        self.swapped = None
+        self.sorting = False
 
 
 def main():

@@ -1,7 +1,7 @@
 import random
 
 
-def bubble_sort(numbers, i, pass_swaps, comparisons, swaps):
+def bubble_sort(numbers, comparisons, swaps, i, pass_swaps):
     swapped = None
     sorting = True
     comparisons += 1
@@ -22,10 +22,10 @@ def bubble_sort(numbers, i, pass_swaps, comparisons, swaps):
         i = 0
         pass_swaps = 0
 
-    return numbers, i, pass_swaps, comparisons, swaps, compared, swapped, sorting
+    return numbers, comparisons, swaps, (i, pass_swaps), compared, swapped, sorting
 
 
-def selection_sort(numbers, base_i, i, min_i, comparisons, swaps):
+def selection_sort(numbers, comparisons, swaps, base_i, i, min_i):
     compared = None
     swapped = None
     sorting = True
@@ -53,10 +53,10 @@ def selection_sort(numbers, base_i, i, min_i, comparisons, swaps):
     else:
         sorting = False
 
-    return numbers, base_i, i, min_i, comparisons, swaps, compared, swapped, sorting
+    return numbers, comparisons, swaps, (base_i, i, min_i), compared, swapped, sorting
 
 
-def insertion_sort(numbers, i, next_i, comparisons, swaps):
+def insertion_sort(numbers, comparisons, swaps, i, next_i):
     compared = None
     swapped = None
     sorting = True
@@ -77,10 +77,10 @@ def insertion_sort(numbers, i, next_i, comparisons, swaps):
     else:
         sorting = False
 
-    return numbers, i, next_i, comparisons, swaps, compared, swapped, sorting
+    return numbers, comparisons, swaps, (i, next_i), compared, swapped, sorting
 
 
-def merge_sort(numbers, size, start_left, end, left, right, merge, comparisons, swaps):
+def merge_sort(numbers, comparisons, swaps, size, start_left, end, left, right, merge):
     referenced = None
     appended = None
     sorting = True
@@ -131,10 +131,10 @@ def merge_sort(numbers, size, start_left, end, left, right, merge, comparisons, 
     else:
         sorting = False
 
-    return numbers, size, start_left, end, left, right, merge, comparisons, swaps, referenced, appended, sorting
+    return numbers, comparisons, swaps, (size, start_left, end, left, right, merge), referenced, appended, sorting
 
 
-def bogosort(numbers, i, ordered, comparisons, swaps):
+def bogosort(numbers, comparisons, swaps, i, ordered):
     sorting = True
     compared = None
     if i < len(numbers) and ordered:
@@ -153,12 +153,12 @@ def bogosort(numbers, i, ordered, comparisons, swaps):
         swaps += 1
         random.shuffle(numbers)
 
-    return numbers, i, ordered, comparisons, swaps, compared, sorting
+    return numbers, comparisons, swaps, (i, ordered), compared, sorting
 
 
-def bogobogosort(numbers, sublist_end, i, ordered, comparisons, swaps):
+def bogobogosort(numbers, comparisons, swaps, sublist_end, i, ordered):
     sublist = numbers[:sublist_end]
-    sublist, i, ordered, comparisons, swaps, compared, sorting = bogosort(sublist, i, ordered, comparisons, swaps)
+    sublist, comparisons, swaps, (i, ordered), compared, sorting = bogosort(sublist, i, ordered, comparisons, swaps)
 
     numbers = sublist + numbers[sublist_end:]
     if not sorting and sublist_end < len(numbers):
@@ -166,4 +166,4 @@ def bogobogosort(numbers, sublist_end, i, ordered, comparisons, swaps):
         ordered = False
         sorting = True
 
-    return numbers, sublist_end, i, ordered, comparisons, swaps, compared, sorting
+    return numbers, comparisons, swaps, (sublist_end, i, ordered), compared, sorting
