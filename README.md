@@ -20,4 +20,4 @@ You will then be able to toggle between playing and pausing your sort animation 
 # What Did I Learn?
  - How to make GUIs with Python and tkinter (refreshing my memory).
  - How to use the grid geometry manager effectively.
- - How I can reinvented traditional sorting algorithms (to allow for user input during sorting).
+ - How I can reinvent traditional sorting algorithms (to allow for user input during sorting).
